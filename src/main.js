@@ -1,8 +1,6 @@
 /* globals _ */
 'use strict'
 var canv = document.getElementById('canv')
-var WIDTH = window.innerWidth
-var HEIGHT = window.innerHeight
 canv.width = WIDTH
 canv.height = HEIGHT
 var ctx = canv.getContext('2d')
@@ -10,56 +8,10 @@ var ctx = canv.getContext('2d')
 var drains = []
 var shapes = []
 var spawner = new Spawner()
+var lives = new Lives()
 
 var dragging = null
 var draggingPos = {x: 0, y:0}
-
-function mouseDown(e) {
-  draggingPos = {x: e.x / WIDTH, y: e.y / HEIGHT}
-  console.log('mouse pos', draggingPos);
-  for (var i = 0, l = shapes.length; i < l; i++) {
-    if (!shapes[i].isDying && shapes[i].collide(draggingPos)) {
-      dragging = shapes[i]
-      break
-    }
-  }
-}
-
-function mouseUp(e) {
-  dragging = null
-}
-
-function mouseMove(e) {
-  if (dragging && !dragging.isDying) {
-    var pos = {x: e.x / WIDTH, y: e.y / HEIGHT}
-    var delta = {x: pos.x - draggingPos.x, y: pos.y - draggingPos.y}
-    draggingPos = pos
-    dragging.x += delta.x
-    dragging.y += delta.y
-  }
-}
-
-function toucher(fn) {
-  return function (e) {
-    var x = e.touches && e.touches[0] && e.touches[0].pageX
-    var y = e.touches && e.touches[0] && e.touches[0].pageY
-    fn({x: x, y: y})
-  }
-}
-
-function pointer(fn) {
-  return function (e) {
-    fn({x: e.pageX, y: e.pageY})
-  }
-}
-
-window.onmousedown = pointer(mouseDown)
-window.onmouseup = pointer(mouseUp)
-window.onmousemove = pointer(mouseMove)
-canv.addEventListener('touchstart', toucher(mouseDown))
-canv.addEventListener('touchmove', toucher(mouseMove))
-canv.addEventListener('touchend', toucher(mouseUp))
-
 
 function Shape(opts) {
   _.assign(this, new BaseShape(opts))
@@ -135,6 +87,8 @@ function loop(time) {
   for (var i = 0, l = shapes.length; i < l; i++) {
     shapes[i].draw(ctx)
   }
+
+  lives.draw(ctx)
 }
 
 var level = -1

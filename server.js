@@ -22,7 +22,7 @@ flo(
     host: 'localhost',
     verbose: false,
     glob: [
-      'main.js'
+      '*.js'
     ]
   },
   function resolver(filepath, callback) {
