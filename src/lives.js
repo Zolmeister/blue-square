@@ -34,16 +34,6 @@ Lives.prototype.onDead = function (fn) {
   this.deadCallback = fn
 }
 
-function mirror(arr) {
-  var res = arr
-  var i = res.length
-  while (i--) {
-    res = res.concat([{x: -res[i].x, y: res[i].y}])
-  }
-
-  return res
-}
-
 function Heart(opts) {
   _.defaults(opts, {
       color: '#ff3fa8',
