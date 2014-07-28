@@ -130,16 +130,16 @@ var plus = mirror([
   ])
 
 var Z = [
-  {x: -1, y: -1},
-  {x: 1, y: -1},
-  {x: 1, y: -0.5},
-  {x: -0.3, y: 0.5},
-  {x: 1, y: 0.5},
-  {x: 1, y: 1},
-  {x: -1, y: 1},
-  {x: -1, y: 0.5},
-  {x: 0.3, y: -0.5},
-  {x: -1, y: -0.5}
+  {x: -0.9, y: -1},
+  {x: 0.9, y: -1},
+  {x: 0.9, y: -0.5},
+  {x: -0.2, y: 0.5},
+  {x: 0.9, y: 0.5},
+  {x: 0.9, y: 1},
+  {x: -0.9, y: 1},
+  {x: -0.9, y: 0.5},
+  {x: 0.2, y: -0.5},
+  {x: -0.9, y: -0.5}
 ]
 
 var odd1 = mirror([
@@ -175,10 +175,32 @@ var levelShapes = [
   Z
 ]
 
+var shapeColors = [
+  '#5677fc', //blue
+  '#e51c23', //red
+  '#259b24', //green
+  '#9c27b0', //purple
+  '#cddc39', //lime
+  '#00bcd4', //cyan
+  '#ff9800', //orange
+  '#9e9e9e' //grey
+  //'#e91e63', //pink
+  //'#673ab7', //deep purple
+  //'#3f51b5', //indigo
+  //'#03a9f4', //light blue
+  //'#009688', //teal
+  //'#8bc34a', //light green
+  //'#ffeb3b', //yellow
+  //'#ffc107', //amber
+  //'#ff5722', //deep orange
+  //'#795548', //brown
+  //'#607d8b' //blue grey
+]
+
 var level = -1
 var levels = [{
   drain: new Drain({
-    color: '#0051ff',
+    color: shapeColors[0],
     x: 0.2,
     y: 0.2,
     size: 0.05,
@@ -186,7 +208,7 @@ var levels = [{
   })
 }, {
   drain: new Drain({
-    color: '#00ff04',
+    color: shapeColors[1],
     x: 0.8,
     y: 0.8,
     size: 0.05,
@@ -194,7 +216,7 @@ var levels = [{
   })
 }, {
   drain: new Drain({
-    color: '#00ff04',
+    color: shapeColors[2],
     x: 0.8,
     y: 0.5,
     size: 0.05,
@@ -202,7 +224,7 @@ var levels = [{
   })
 }, {
   drain: new Drain({
-    color: '#00ff04',
+    color: shapeColors[3],
     x: 0.2,
     y: 0.5,
     size: 0.05,
@@ -210,7 +232,7 @@ var levels = [{
   })
 }, {
   drain: new Drain({
-    color: '#00ff04',
+    color: shapeColors[4],
     x: 0.2,
     y: 0.8,
     size: 0.05,
@@ -218,7 +240,7 @@ var levels = [{
   })
 }, {
   drain: new Drain({
-    color: '#00ff04',
+    color: shapeColors[5],
     x: 0.5,
     y: 0.8,
     size: 0.05,
@@ -226,7 +248,7 @@ var levels = [{
   })
 }, {
   drain: new Drain({
-    color: '#00ff04',
+    color: shapeColors[6],
     x: 0.5,
     y: 0.2,
     size: 0.05,
@@ -234,7 +256,7 @@ var levels = [{
   })
 }, {
   drain: new Drain({
-    color: '#00ff04',
+    color: shapeColors[7],
     x: 0.8,
     y: 0.2,
     size: 0.05,
