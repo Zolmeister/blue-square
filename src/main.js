@@ -197,13 +197,10 @@ var shapeColors = [
   //'#607d8b' //blue grey
 ]
 
-var tl = 0.15
-var tc = 0.5
-var tr = 0.85
 var drainPos = [
-  [tl, tl], [tc, tl], [tr, tl],
-  [tl, tc],           [tr, tc],
-  [tl, tr], [tc, tr], [tr, tr]
+  [0.17, 0.27], [0.5, 0.17], [0.83, 0.27],
+  [0.07, 0.5],           [0.93, 0.5],
+  [0.17, 0.73], [0.5, 0.83], [0.83, 0.73]
 ]
 
 var posOrder = [
@@ -218,7 +215,7 @@ for(var i=0;i<levelShapes.length;i++){
     color: shapeColors[i],
     x: drainPos[posOrder[i]][0],
     y: drainPos[posOrder[i]][1],
-    size: 0.05,
+    size: 0.04,
     verticies: levelShapes[i]
   })
 })
