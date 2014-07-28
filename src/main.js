@@ -28,6 +28,8 @@ Shape.prototype.kill = function () {
 
 Shape.prototype.physics = function (time) {
   BaseShape.prototype.physics.call(this, time)
+  this.rot += Math.PI / 500
+
   if (this.isDying) {
     this.dying -= 1
     if (this.dying <= 0) {
@@ -91,6 +93,88 @@ function loop(time) {
   lives.draw(ctx)
 }
 
+var square = mirror([
+      {x: -1, y: -1},
+      {x: 1, y: -1},
+      {x: 1, y: 1},
+      {x: -1, y: 1}
+    ])
+var triangle = [
+      {x: 0, y: -1},
+      {x: 1, y: 1},
+      {x: -1, y: 1}
+    ]
+var star = mirror([
+      {x: 0, y: -1},
+      {x: 0.3, y: -0.3},
+      {x: 1, y: -0.3},
+      {x: 0.5, y: 0.2},
+      {x: 0.7, y: 0.9},
+      {x: 0, y: 0.5}
+    ])
+
+var hexagon = mirror([
+  {x: 0.5, y: -1},
+  {x: 1, y: -0.34},
+  {x: 1, y: 0.34},
+  {x: 0.5, y: 1}
+])
+
+var plus = mirror([
+  {x: 0.3, y: -1},
+  {x: 0.3, y: -0.3},
+  {x: 1, y: -0.3},
+  {x: 1, y: 0.3},
+  {x: 0.3, y: 0.3},
+  {x: 0.3, y: 1}
+  ])
+
+var Z = [
+  {x: -1, y: -1},
+  {x: 1, y: -1},
+  {x: 1, y: -0.5},
+  {x: -0.3, y: 0.5},
+  {x: 1, y: 0.5},
+  {x: 1, y: 1},
+  {x: -1, y: 1},
+  {x: -1, y: 0.5},
+  {x: 0.3, y: -0.5},
+  {x: -1, y: -0.5}
+]
+
+var odd1 = mirror([
+  {x: 0, y: 0.2},
+  {x: 0.2, y: 0.6},
+  {x: 0, y: -1},
+  {x: 0.8, y: -0.6},
+  {x: 0.9, y: 1},
+  {x: 0.5, y: -0.5},
+  {x: 0, y: 0.5},
+  ])
+
+var odd2 = mirror([
+  {x: 0, y: -0.3},
+  {x: 0.7, y: -1},
+  {x: 0.7, y: 0},
+  {x: 0.2, y: -0.5},
+  {x: 1, y: -0.7},
+  {x: 0.25, y: 0.2},
+  {x: 1, y: 1},
+  {x: 1, y: 0.2},
+  {x: 0.25, y: 1}
+  ])
+
+var levelShapes = [
+  square,
+  triangle,
+  hexagon,
+  plus,
+  star,
+  odd1,
+  odd2,
+  Z
+]
+
 var level = -1
 var levels = [{
   drain: new Drain({
@@ -98,12 +182,7 @@ var levels = [{
     x: 0.2,
     y: 0.2,
     size: 0.05,
-    verticies: [
-      {x: -1, y: -1},
-      {x: 1, y: -1},
-      {x: 1, y: 1},
-      {x: -1, y: 1}
-    ]
+    verticies: levelShapes[0]
   })
 }, {
   drain: new Drain({
@@ -111,11 +190,55 @@ var levels = [{
     x: 0.8,
     y: 0.8,
     size: 0.05,
-    verticies: [
-      {x: 0, y: -1},
-      {x: 1, y: 1},
-      {x: -1, y: 1}
-    ]
+    verticies: levelShapes[1]
+  })
+}, {
+  drain: new Drain({
+    color: '#00ff04',
+    x: 0.8,
+    y: 0.5,
+    size: 0.05,
+    verticies: levelShapes[2]
+  })
+}, {
+  drain: new Drain({
+    color: '#00ff04',
+    x: 0.2,
+    y: 0.5,
+    size: 0.05,
+    verticies: levelShapes[3]
+  })
+}, {
+  drain: new Drain({
+    color: '#00ff04',
+    x: 0.2,
+    y: 0.8,
+    size: 0.05,
+    verticies: levelShapes[4]
+  })
+}, {
+  drain: new Drain({
+    color: '#00ff04',
+    x: 0.5,
+    y: 0.8,
+    size: 0.05,
+    verticies: levelShapes[5]
+  })
+}, {
+  drain: new Drain({
+    color: '#00ff04',
+    x: 0.5,
+    y: 0.2,
+    size: 0.05,
+    verticies: levelShapes[6]
+  })
+}, {
+  drain: new Drain({
+    color: '#00ff04',
+    x: 0.8,
+    y: 0.2,
+    size: 0.05,
+    verticies: levelShapes[7]
   })
 }]
 
@@ -124,6 +247,12 @@ function levelUp() {
   drains.push(levels[level].drain)
 }
 
+levelUp()
+levelUp()
+levelUp()
+levelUp()
+levelUp()
+levelUp()
 levelUp()
 levelUp()
 

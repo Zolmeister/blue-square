@@ -13,6 +13,7 @@ function BaseShape(opts) {
 }
 
 BaseShape.prototype.draw = function (ctx) {
+  var scale = Math.min(WIDTH, HEIGHT)
   ctx.save()
   ctx.translate(this.x * WIDTH, this.y * HEIGHT)
   ctx.rotate(this.rot)
@@ -23,7 +24,7 @@ BaseShape.prototype.draw = function (ctx) {
   ctx.beginPath()
   for (var i = 0, l = this.verticies.length; i < l + 2; i++) {
     var vert = this.verticies[i % l]
-    ctx.lineTo(vert.x * this.size * WIDTH, vert.y * this.size * HEIGHT)
+    ctx.lineTo(vert.x * this.size * scale, vert.y * this.size * scale)
   }
   ctx.stroke()
 
@@ -31,7 +32,7 @@ BaseShape.prototype.draw = function (ctx) {
 }
 
 BaseShape.prototype.physics = function (/* time */) {
-  this.rot += Math.PI / 500
+  // noop
 }
 
 BaseShape.prototype.collide = function (obj) {
