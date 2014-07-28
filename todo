@@ -1,7 +1,8 @@
 TODO:
-dont spin drains
-create the rest of the drain shapes
-position drains along the edges (wthin bounds)
+// dont spin drains
+// create the rest of the drain shapes
+//set shape colors
+//position drains along the edges (wthin bounds)
 smart spawner (random location not touching a drain)
 lose a life if drag to the wrong drain
 lose a life if shape not drained in time (and remove shape)

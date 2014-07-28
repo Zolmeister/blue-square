@@ -197,72 +197,32 @@ var shapeColors = [
   //'#607d8b' //blue grey
 ]
 
+var tl = 0.15
+var tc = 0.5
+var tr = 0.85
+var drainPos = [
+  [tl, tl], [tc, tl], [tr, tl],
+  [tl, tc],           [tr, tc],
+  [tl, tr], [tc, tr], [tr, tr]
+]
+
+var posOrder = [
+  1, 6, 3, 4, 5, 2, 0, 7
+]
+
 var level = -1
-var levels = [{
+var levels = []
+for(var i=0;i<levelShapes.length;i++){
+  levels.push({
   drain: new Drain({
-    color: shapeColors[0],
-    x: 0.2,
-    y: 0.2,
+    color: shapeColors[i],
+    x: drainPos[posOrder[i]][0],
+    y: drainPos[posOrder[i]][1],
     size: 0.05,
-    verticies: levelShapes[0]
+    verticies: levelShapes[i]
   })
-}, {
-  drain: new Drain({
-    color: shapeColors[1],
-    x: 0.8,
-    y: 0.8,
-    size: 0.05,
-    verticies: levelShapes[1]
-  })
-}, {
-  drain: new Drain({
-    color: shapeColors[2],
-    x: 0.8,
-    y: 0.5,
-    size: 0.05,
-    verticies: levelShapes[2]
-  })
-}, {
-  drain: new Drain({
-    color: shapeColors[3],
-    x: 0.2,
-    y: 0.5,
-    size: 0.05,
-    verticies: levelShapes[3]
-  })
-}, {
-  drain: new Drain({
-    color: shapeColors[4],
-    x: 0.2,
-    y: 0.8,
-    size: 0.05,
-    verticies: levelShapes[4]
-  })
-}, {
-  drain: new Drain({
-    color: shapeColors[5],
-    x: 0.5,
-    y: 0.8,
-    size: 0.05,
-    verticies: levelShapes[5]
-  })
-}, {
-  drain: new Drain({
-    color: shapeColors[6],
-    x: 0.5,
-    y: 0.2,
-    size: 0.05,
-    verticies: levelShapes[6]
-  })
-}, {
-  drain: new Drain({
-    color: shapeColors[7],
-    x: 0.8,
-    y: 0.2,
-    size: 0.05,
-    verticies: levelShapes[7]
-  })
-}]
+})
+}
 
 function levelUp() {
   level += 1
