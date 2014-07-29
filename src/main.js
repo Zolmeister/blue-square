@@ -14,7 +14,9 @@ var ctx = canv.getContext('2d')
 
 var drains = []
 var shapes = []
-var spawner = new Spawner()
+var spawner = new Spawner(function () {
+  lives.kill()
+})
 var lives = new Lives(gameOver)
 
 function gameOver() {
@@ -26,15 +28,17 @@ var draggingPos = {x: 0, y:0}
 
 function Shape(opts) {
   _.assign(this, new BaseShape(opts))
+  this.life = 10
+  this.killCallback = opts && opts.onKill || _.noop
 }
 
 Shape.prototype = Object.create(BaseShape.prototype)
 
 Shape.prototype.kill = function () {
   if (this.isDying) return
-
+  this.killCallback()
   this.isDying = true
-  this.dying = 30
+  this.dying = 5
 }
 
 Shape.prototype.physics = function (time) {
@@ -45,6 +49,11 @@ Shape.prototype.physics = function (time) {
     this.dying -= 1
     if (this.dying <= 0) {
       this.isDead = true
+    }
+  } else {
+    this.life -= 1
+    if (this.life <= 0) {
+      this.kill()
     }
   }
 }

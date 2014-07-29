@@ -1,6 +1,7 @@
-function Spawner() {
+function Spawner(onKill) {
   this.spawnInterval = 100000
   this.lastSpawn = -100000
+  this.onKillCallback = onKill || _.noop
 }
 
 var maxPos = 0.72
@@ -15,6 +16,7 @@ Spawner.prototype.spawn = function (time) {
 }
 
 Spawner.prototype._spawn = function () {
+  var self = this
   var targetDrain = _.sample(drains)
 
   shapes.push(new Shape({
@@ -22,6 +24,9 @@ Spawner.prototype._spawn = function () {
     x: (Math.random() * (maxPos - minPos)) + minPos,
     y: (Math.random() * (maxPos - minPos)) + minPos,
     size: 0.03,
-    verticies: _.cloneDeep(targetDrain.verticies)
+    verticies: _.cloneDeep(targetDrain.verticies),
+    onKill: function () {
+      self.onKillCallback()
+    }
   }))
 }
