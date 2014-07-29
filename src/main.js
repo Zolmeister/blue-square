@@ -72,7 +72,7 @@ Score.prototype.isBest = function () {
 
 function Shape(opts) {
   _.assign(this, new BaseShape(opts))
-  this.life = 10
+  this.life = 500
   this.killCallback = opts && opts.onKill || _.noop
 }
 
@@ -84,11 +84,12 @@ Shape.prototype.kill = function (shouldNotCallback) {
     this.killCallback()
   }
   this.isDying = true
-  this.dying = 5
+  this.dying = 500
 }
 
 Shape.prototype.physics = function (time) {
   BaseShape.prototype.physics.call(this, time)
+  if (!this.dying)
   this.rot += Math.PI / 500
 
   if (this.isDying) {
@@ -126,10 +127,7 @@ Button.prototype.draw = function (ctx) {
 }
 
 function loop(time) {
-  //requestAnimationFrame(loop)
-  setTimeout(function () {
-    loop(Date.now())
-  }, 200)
+  requestAnimationFrame(loop)
 
   // clear canvas
   ctx.clearRect(0, 0, canv.width, canv.height)
