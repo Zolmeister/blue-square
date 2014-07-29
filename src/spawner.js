@@ -3,6 +3,9 @@ function Spawner() {
   this.lastSpawn = -100000
 }
 
+var maxPos = 0.72
+var minPos = 0.27
+
 Spawner.prototype.spawn = function (time) {
   if (time - this.lastSpawn > this.spawnInterval) {
     console.log('spawning')
@@ -12,16 +15,13 @@ Spawner.prototype.spawn = function (time) {
 }
 
 Spawner.prototype._spawn = function () {
+  var targetDrain = _.sample(drains)
+
   shapes.push(new Shape({
-    color: '#c7ffc5',
-    x: 0.5,
-    y: 0.5,
+    color: targetDrain.color,
+    x: (Math.random() * (maxPos - minPos)) + minPos,
+    y: (Math.random() * (maxPos - minPos)) + minPos,
     size: 0.03,
-    verticies: [
-      {x: -1, y: -1},
-      {x: 1, y: -1},
-      {x: 1, y: 1},
-      {x: -1, y: 1}
-    ]
+    verticies: _.cloneDeep(targetDrain.verticies)
   }))
 }

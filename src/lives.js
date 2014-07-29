@@ -1,5 +1,6 @@
-function Lives() {
-  this.deadCallback = _.noop
+function Lives(cb) {
+  this.hasDied = false
+  this.deadCallback = cb || _.noop
   this.hearts = []
 
   var size = 0.02
@@ -14,6 +15,20 @@ function Lives() {
 
 // physics
 // once last heart is removed, call deadCallback
+Lives.prototype.physics = function (time) {
+  var i = this.hearts.length
+  while (i--) {
+    this.hearts[i].physics(time)
+    if (this.hearts[i].isDead) {
+      this.hearts.splice(i, 1)
+    }
+  }
+
+  if (!this.hasDied && !this.hearts.length) {
+    this.hasDied = true
+    this.deadCallback()
+  }
+}
 
 Lives.prototype.draw = function (ctx) {
   var x = 0.01
@@ -27,7 +42,16 @@ Lives.prototype.draw = function (ctx) {
 }
 
 Lives.prototype.kill = function () {
+
   // kill the next living heart, if it exists
+  var i = this.hearts.length
+  while (i--) {
+    if (!this.hearts[i].isDying) {
+      console.log('killing heart,', i);
+      this.hearts[i].kill()
+      break
+    }
+  }
 }
 
 Lives.prototype.onDead = function (fn) {
@@ -57,3 +81,19 @@ function Heart(opts) {
 }
 
 Heart.prototype = Object.create(BaseShape.prototype)
+Heart.prototype.kill = function () {
+  if (this.isDying) return
+
+  this.isDying = true
+  this.dying = 10
+}
+Heart.prototype.physics = function (time) {
+  BaseShape.prototype.physics.call(this, time)
+
+  if (this.isDying) {
+    this.dying -= 1
+    if (this.dying <= 0) {
+      this.isDead = true
+    }
+  }
+}

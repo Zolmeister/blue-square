@@ -3,12 +3,23 @@
 var canv = document.getElementById('canv')
 canv.width = WIDTH
 canv.height = HEIGHT
+
+window.onresize = function () {
+  WIDTH = window.innerWidth
+  HEIGHT = window.innerHeight
+  canv.width = WIDTH
+  canv.height = HEIGHT
+}
 var ctx = canv.getContext('2d')
 
 var drains = []
 var shapes = []
 var spawner = new Spawner()
-var lives = new Lives()
+var lives = new Lives(gameOver)
+
+function gameOver() {
+  alert('Game over')
+}
 
 var dragging = null
 var draggingPos = {x: 0, y:0}
@@ -23,7 +34,7 @@ Shape.prototype.kill = function () {
   if (this.isDying) return
 
   this.isDying = true
-  this.dying = 120
+  this.dying = 30
 }
 
 Shape.prototype.physics = function (time) {
@@ -39,25 +50,37 @@ Shape.prototype.physics = function (time) {
 }
 
 function loop(time) {
-  requestAnimationFrame(loop)
+  //requestAnimationFrame(loop)
+  setTimeout(function () {
+    loop(Date.now())
+  }, 200)
 
   // clear canvas
   ctx.clearRect(0, 0, canv.width, canv.height)
+
+  if (lives.hasDied) {
+    ctx.fillStyle = '#fff'
+    ctx.font = '40px sans'
+    ctx.fillText('Game Over', WIDTH / 2 - 3 * 40, HEIGHT / 2 - 20)
+    return
+  }
 
   // physics
   spawner.spawn(time)
   var i = drains.length;
   while (i--) {
-    drains[i].physics(ctx)
+    drains[i].physics(time)
   }
 
   var i = shapes.length
   while (i--) {
-    shapes[i].physics(ctx)
+    shapes[i].physics(time)
     if (shapes[i].isDead) {
       shapes.splice(i, 1)
     }
   }
+
+  lives.physics(time)
 
   var i = drains.length
   while (i--) {
@@ -68,7 +91,10 @@ function loop(time) {
       var shape = shapes[j]
 
       if (shape.collide(drain)) {
-        console.log('collide!')
+        if (!shape.dying && JSON.stringify(shape.verticies) !==
+             JSON.stringify(drain.verticies)) {
+          lives.kill()
+        }
         shape.kill()
         break
       }
