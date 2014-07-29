@@ -18,6 +18,23 @@ var spawner = new Spawner(function () {
   lives.kill()
 })
 var lives = new Lives(gameOver)
+var score = new Score()
+
+function Score() {
+  this.value = 0
+  this.x = 0.90
+  this.y = 0.05
+  this.color = '#fff'
+}
+
+Score.prototype.draw = function (ctx) {
+  ctx.save()
+  ctx.translate(this.x * WIDTH, this.y * HEIGHT)
+  ctx.fillStyle = this.color
+  ctx.font = '20px sans'
+  ctx.fillText(this.value, this.x, this.y)
+  ctx.restore()
+}
 
 function gameOver() {
   alert('Game over')
@@ -34,9 +51,11 @@ function Shape(opts) {
 
 Shape.prototype = Object.create(BaseShape.prototype)
 
-Shape.prototype.kill = function () {
+Shape.prototype.kill = function (shouldNotCallback) {
   if (this.isDying) return
-  this.killCallback()
+  if (!shouldNotCallback) {
+    this.killCallback()
+  }
   this.isDying = true
   this.dying = 5
 }
@@ -103,8 +122,11 @@ function loop(time) {
         if (!shape.dying && JSON.stringify(shape.verticies) !==
              JSON.stringify(drain.verticies)) {
           lives.kill()
+          shape.kill()
+        } else if (!shape.dying) {
+          score.value += 5
+          shape.kill(true)
         }
-        shape.kill()
         break
       }
     }
@@ -120,6 +142,7 @@ function loop(time) {
   }
 
   lives.draw(ctx)
+  score.draw(ctx)
 }
 
 var level = -1
