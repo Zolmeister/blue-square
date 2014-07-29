@@ -1,13 +1,28 @@
 
 function mouseDown(e) {
-  draggingPos = {x: e.x / WIDTH, y: e.y / HEIGHT}
+  var x = e.x / WIDTH
+  var y = e.y / HEIGHT
+
+  draggingPos = {x: x, y: y}
   console.log('mouse pos', draggingPos);
-  for (var i = 0, l = shapes.length; i < l; i++) {
+  var i = shapes.length
+  while (i--) {
     if (!shapes[i].isDying && shapes[i].collide(draggingPos)) {
       dragging = shapes[i]
       break
     }
   }
+
+  i = buttons.length
+
+  while (i--) {
+    var button = buttons[i]
+    if (!(x>button.x + button.width/2 || x<button.x - button.width/2 || y>button.y+button.height/2 || y<button.y-button.height/2)) {
+      button.onclick()
+    }
+
+  }
+
 }
 
 function mouseUp(e) {

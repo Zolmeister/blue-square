@@ -11,37 +11,64 @@ window.onresize = function () {
   canv.height = HEIGHT
 }
 var ctx = canv.getContext('2d')
+ctx.textAlign = 'center'
 
-var drains = []
-var shapes = []
-var spawner = new Spawner(function () {
-  lives.kill()
-})
-var lives = new Lives(gameOver)
-var score = new Score()
+var drains, shapes, spawner, lives, score, dragging, draggingPos, level
+var buttons = []
+function newGame() {
+  level = -1
+  dragging = null
+  draggingPos = {x: 0, y:0}
+  buttons = []
+
+  drains = []
+  shapes = []
+  spawner = new Spawner(function () {
+    lives.kill()
+  })
+  lives = new Lives()
+  score = new Score()
+
+  levelUp()
+}
 
 function Score() {
+  this.best = parseInt(typeof localStorage !== 'undefined' &&
+                       localStorage.best || '0', 10)
   this.value = 0
   this.x = 0.90
-  this.y = 0.05
+  this.y = 0.04
   this.color = '#fff'
 }
 
 Score.prototype.draw = function (ctx) {
+  var scale = Math.min(WIDTH, HEIGHT)
+
   ctx.save()
   ctx.translate(this.x * WIDTH, this.y * HEIGHT)
   ctx.fillStyle = this.color
-  ctx.font = '20px sans'
-  ctx.fillText(this.value, this.x, this.y)
+  ctx.font = scale / 40 + 'px sans'
+  ctx.fillText('best: ' + this.best, this.x, this.y)
+  ctx.fillText('score: ' + this.value, this.x, this.y + scale / 35)
   ctx.restore()
 }
 
-function gameOver() {
-  alert('Game over')
+Score.prototype.add = function (val) {
+  this.value += val
 }
 
-var dragging = null
-var draggingPos = {x: 0, y:0}
+Score.prototype.save = function () {
+  if (this.isBest() && typeof localStorage !== 'undefined') {
+    localStorage.best = this.value
+    this.best = this.value
+  }
+}
+
+Score.prototype.isBest = function () {
+  return this.value > this.best
+}
+
+
 
 function Shape(opts) {
   _.assign(this, new BaseShape(opts))
@@ -77,6 +104,27 @@ Shape.prototype.physics = function (time) {
   }
 }
 
+function Button(opts) {
+  _.assign(this, opts)
+}
+
+Button.prototype.draw = function (ctx) {
+  var scale = Math.min(WIDTH, HEIGHT)
+  var sX = this.x * WIDTH
+  var sY = this.y * HEIGHT
+  var sW = this.width * scale
+  var sH = this.height * scale
+
+  ctx.save()
+  ctx.fillStyle = this.color
+  ctx.translate(sX, sY)
+  ctx.fillRect(-sW/2, -sH/2, sW, sH)
+  ctx.fillStyle = '#fff'
+  ctx.font = scale / 30 + 'px sans'
+  ctx.fillText(this.text, 0, scale / 30 / 4)
+  ctx.restore()
+}
+
 function loop(time) {
   //requestAnimationFrame(loop)
   setTimeout(function () {
@@ -87,9 +135,26 @@ function loop(time) {
   ctx.clearRect(0, 0, canv.width, canv.height)
 
   if (lives.hasDied) {
+    if (!buttons.length) {
+      buttons.push(new Button({
+        x: 0.5,
+        y: 0.68,
+        width: 0.3,
+        height: 0.07,
+        text: 'Play Again?',
+        onclick: newGame,
+        color: '#03a9f4'
+      }))
+    }
+    var i = buttons.length
+    while(i--) buttons[i].draw(ctx)
+    var scale = Math.min(WIDTH, HEIGHT)
     ctx.fillStyle = '#fff'
-    ctx.font = '40px sans'
-    ctx.fillText('Game Over', WIDTH / 2 - 3 * 40, HEIGHT / 2 - 20)
+    ctx.font = scale / 20 + 'px sans'
+    ctx.fillText('Game Over', WIDTH / 2, HEIGHT / 2)
+    score.x = 0.5
+    score.y = 0.57
+    score.draw(ctx)
     return
   }
 
@@ -124,7 +189,7 @@ function loop(time) {
           lives.kill()
           shape.kill()
         } else if (!shape.dying) {
-          score.value += 5
+          score.add(5)
           shape.kill(true)
         }
         break
@@ -145,20 +210,12 @@ function loop(time) {
   score.draw(ctx)
 }
 
-var level = -1
-
 function levelUp() {
   level += 1
   drains.push(levels[level].drain)
+  spawner.levelUp(level)
 }
 
-levelUp()
-levelUp()
-levelUp()
-levelUp()
-levelUp()
-levelUp()
-levelUp()
-levelUp()
+newGame()
 
 requestAnimationFrame(loop)

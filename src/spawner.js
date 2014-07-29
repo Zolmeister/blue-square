@@ -1,11 +1,16 @@
 function Spawner(onKill) {
-  this.spawnInterval = 100000
-  this.lastSpawn = -100000
+  this.baseSpeed = 2000
+  this.spawnInterval = this.baseSpeed
+  this.lastSpawn = 0
   this.onKillCallback = onKill || _.noop
 }
 
 var maxPos = 0.72
 var minPos = 0.27
+
+Spawner.prototype.levelUp = function (level) {
+  this.spawnInterval = this.baseSpeed / (Math.sqrt(Math.sqrt(level)) + 1)
+}
 
 Spawner.prototype.spawn = function (time) {
   if (time - this.lastSpawn > this.spawnInterval) {

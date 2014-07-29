@@ -1,6 +1,5 @@
-function Lives(cb) {
+function Lives() {
   this.hasDied = false
-  this.deadCallback = cb || _.noop
   this.hearts = []
 
   var size = 0.02
@@ -14,7 +13,6 @@ function Lives(cb) {
 }
 
 // physics
-// once last heart is removed, call deadCallback
 Lives.prototype.physics = function (time) {
   var i = this.hearts.length
   while (i--) {
@@ -26,7 +24,6 @@ Lives.prototype.physics = function (time) {
 
   if (!this.hasDied && !this.hearts.length) {
     this.hasDied = true
-    this.deadCallback()
   }
 }
 
@@ -52,10 +49,6 @@ Lives.prototype.kill = function () {
       break
     }
   }
-}
-
-Lives.prototype.onDead = function (fn) {
-  this.deadCallback = fn
 }
 
 function Heart(opts) {
