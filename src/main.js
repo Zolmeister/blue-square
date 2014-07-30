@@ -41,10 +41,12 @@ function newGame() {
 function LevelLoadingBar(interval) {
   this.totalTime = interval
   this.progress = 0
+  this.time = 0
 }
 
-LevelLoadingBar.prototype.physics = function (time) {
-  this.progress = (time % this.totalTime) / this.totalTime
+LevelLoadingBar.prototype.physics = function (time, delta) {
+  this.time += delta
+  this.progress = (this.time % this.totalTime) / this.totalTime
 }
 
 LevelLoadingBar.prototype.draw = function (ctx) {
@@ -147,8 +149,13 @@ Button.prototype.draw = function (ctx) {
   ctx.restore()
 }
 
+var last = 0
+var delta = 0
 function loop(time) {
   requestAnimationFrame(loop)
+
+  delta = time - last
+  last = time
 
   // clear canvas
   ctx.clearRect(0, 0, canv.width, canv.height)
@@ -177,7 +184,7 @@ function loop(time) {
     return
   }
 
-  levelLoadingBar.physics(time)
+  levelLoadingBar.physics(time, delta)
 
   // physics
   spawner.spawn(time)
