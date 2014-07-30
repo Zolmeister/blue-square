@@ -15,7 +15,12 @@ ctx.textAlign = 'center'
 
 var drains, shapes, spawner, lives, score, dragging, draggingPos, level
 var buttons = []
+var LEVEL_TIME = 30000
+var levelInterval = null
+var levelLoadingBar
 function newGame() {
+  window.clearInterval(levelInterval)
+  levelInterval = setInterval(levelUp, LEVEL_TIME)
   level = -1
   dragging = null
   draggingPos = {x: 0, y:0}
@@ -28,9 +33,25 @@ function newGame() {
   })
   lives = new Lives()
   score = new Score()
+  levelLoadingBar = new LevelLoadingBar(LEVEL_TIME)
 
   levelUp()
 }
+
+function LevelLoadingBar(interval) {
+  this.totalTime = interval
+  this.progress = 0
+}
+
+LevelLoadingBar.prototype.physics = function (time) {
+  this.progress = (time % this.totalTime) / this.totalTime
+}
+
+LevelLoadingBar.prototype.draw = function (ctx) {
+  ctx.fillStyle = drains[drains.length - 1].color
+  ctx.fillRect(0, 0, WIDTH * this.progress, 4)
+}
+
 
 function Score() {
   this.best = parseInt(typeof localStorage !== 'undefined' &&
@@ -84,7 +105,7 @@ Shape.prototype.kill = function (shouldNotCallback) {
     this.killCallback()
   }
   this.isDying = true
-  this.dying = 500
+  this.dying = 1
 }
 
 Shape.prototype.physics = function (time) {
@@ -156,6 +177,8 @@ function loop(time) {
     return
   }
 
+  levelLoadingBar.physics(time)
+
   // physics
   spawner.spawn(time)
   var i = drains.length;
@@ -195,6 +218,7 @@ function loop(time) {
     }
   }
 
+  levelLoadingBar.draw(ctx)
 
   // draw
   for (var i = 0, l = drains.length; i < l; i++) {
@@ -210,6 +234,7 @@ function loop(time) {
 
 function levelUp() {
   level += 1
+  if (levels[level])
   drains.push(levels[level].drain)
   spawner.levelUp(level)
 }

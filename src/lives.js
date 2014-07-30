@@ -78,7 +78,7 @@ Heart.prototype.kill = function () {
   if (this.isDying) return
 
   this.isDying = true
-  this.dying = 10
+  this.dying = 1
 }
 Heart.prototype.physics = function (time) {
   BaseShape.prototype.physics.call(this, time)
