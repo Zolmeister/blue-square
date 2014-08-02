@@ -6,18 +6,17 @@ TODO:
 //smart spawner (random location not touching a drain)
 //lose a life if drag to the wrong drain
 //lose a life if shape not drained in time (and remove shape)
-inscrease spawn rate per level
-smart spawning of shapes based on drains available
-add score visiblity object
-add game over
+//inscrease spawn rate per level
+//smart spawning of shapes based on drains available
+//add score visiblity object
+//add game over
 
 Animations:
-add shine to shapes
 score object animation
-spin shapes faster as their times increase
-shapes break down as death animation
-hearts break down as death animation
-drains glow/animate as collision animation (maybe spin once quickly?)
+//spin shapes faster as their times increase
+//shapes break down as death animation
+//hearts break down as death animation
+//drains glow/animate as collision animation (maybe spin once quickly?)
 game over animation, everything breaks down
 
 Also:

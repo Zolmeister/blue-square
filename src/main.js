@@ -220,6 +220,7 @@ function loop(time) {
         } else if (!shape.isDying) {
           score.add(5)
           shape.kill(true)
+          drain.spin()
         }
         break
       }
