@@ -1,7 +1,7 @@
 function Spawner(onKill) {
   this.baseSpeed = 2000
   this.spawnInterval = this.baseSpeed
-  this.lastSpawn = -this.spawnInterval
+  this.lastSpawn = 0
   this.onKillCallback = onKill || _.noop
 }
 

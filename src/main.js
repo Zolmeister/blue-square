@@ -18,6 +18,22 @@ var buttons = []
 var LEVEL_TIME = 30000
 var levelInterval = null
 var levelLoadingBar
+var starterArrow = new BaseShape({
+  x: 0.5,
+  y: 0.35,
+  color: '#555',
+  verticies: [
+    {x: -0.8, y: -0.2},
+    {x: 0, y: -1.1},
+    {x: 0.8, y: -0.2},
+    {x: 0, y: -1},
+    {x: 0, y: 1},
+    {x: 0, y: -1}
+  ],
+  size: 0.04,
+  lineWidth: 0.004
+})
+
 function newGame() {
   window.clearInterval(levelInterval)
   levelInterval = setInterval(levelUp, LEVEL_TIME)
@@ -36,6 +52,17 @@ function newGame() {
   levelLoadingBar = new LevelLoadingBar(LEVEL_TIME)
 
   levelUp()
+
+  shapes.push(new Shape({
+    color: drains[0].color,
+    x: 0.5,
+    y: 0.5,
+    size: 0.03,
+    verticies: _.cloneDeep(drains[0].verticies),
+    onKill: function () {
+      lives.kill()
+    }
+  }))
 }
 
 function LevelLoadingBar(interval) {
@@ -227,6 +254,8 @@ function loop(time) {
     }
   }
 
+
+  starterArrow.draw(ctx)
   levelLoadingBar.draw(ctx)
 
   // draw
@@ -239,12 +268,14 @@ function loop(time) {
 
   lives.draw(ctx)
   score.draw(ctx)
+
 }
 
 function levelUp() {
   level += 1
-  if (levels[level])
-  drains.push(levels[level].drain)
+  if (levels[level]) {
+    drains.push(levels[level].drain)
+  }
   spawner.levelUp(level)
 }
 
