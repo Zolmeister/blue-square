@@ -112,8 +112,8 @@ Shape.prototype.kill = function (shouldNotCallback) {
 
 Shape.prototype.physics = function (time) {
   BaseShape.prototype.physics.call(this, time)
-  if (!this.dying)
-  this.rot += Math.PI / 500
+  if (!this.isDying)
+  this.rot += Math.PI / this.life * 3
 
   if (this.isDying) {
     this.dying -= 1
