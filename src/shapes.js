@@ -8,12 +8,12 @@ function mirror(arr) {
   return res
 }
 
-var square = mirror([
+var square = [
       {x: -1, y: -1},
       {x: 1, y: -1},
       {x: 1, y: 1},
       {x: -1, y: 1}
-    ])
+    ]
 var triangle = [
       {x: 0, y: -1},
       {x: 1, y: 1},
