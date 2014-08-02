@@ -161,7 +161,7 @@ function loop(time) {
   // clear canvas
   ctx.clearRect(0, 0, canv.width, canv.height)
 
-  if (false && lives.hasDied) {
+  if (lives.hasDied) {
     if (!buttons.length) {
       buttons.push(new Button({
         x: 0.5,
@@ -213,11 +213,11 @@ function loop(time) {
       var shape = shapes[j]
 
       if (shape.collide(drain)) {
-        if (!shape.dying && JSON.stringify(shape.verticies) !==
+        if (!shape.isDying && JSON.stringify(shape.verticies) !==
              JSON.stringify(drain.verticies)) {
           lives.kill()
           shape.kill()
-        } else if (!shape.dying) {
+        } else if (!shape.isDying) {
           score.add(5)
           shape.kill(true)
         }

@@ -6,7 +6,10 @@ function BaseShape(opts) {
     x: 0,
     y: 0,
     lineWidth: 0.008,
-    rot: 0
+    rot: 0,
+    isDying: false,
+    deathTime: 100,
+    dying: 100
   })
 
   _.assign(this, opts)
