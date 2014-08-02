@@ -248,6 +248,19 @@ function levelUp() {
   spawner.levelUp(level)
 }
 
+// called by lives.js
+function killEverything() {
+  var i = drains.length
+  while (i--) {
+    drains[i].kill()
+  }
+
+  var i = shapes.length
+  while (i--) {
+    shapes[i].kill()
+  }
+}
+
 newGame()
 
 requestAnimationFrame(loop)

@@ -49,6 +49,9 @@ Lives.prototype.kill = function () {
       break
     }
   }
+  if (i === 0) {
+    killEverything()
+  }
 }
 
 function Heart(opts) {

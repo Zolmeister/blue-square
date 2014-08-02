@@ -12,6 +12,12 @@ Drain.prototype.spin = function () {
   this.spinsLeft = 1
 }
 
+Drain.prototype.kill = function () {
+  if (this.isDying) return
+  this.isDying = true
+  this.dying = this.deathTime
+}
+
 Drain.prototype.physics = function (time) {
   BaseShape.prototype.physics.call(this, time)
 
@@ -23,5 +29,17 @@ Drain.prototype.physics = function (time) {
   if (this.currentSpin >= this.spinSpeed/2) {
     this.currentSpin = 0
     this.spinsLeft -= 1
+  }
+
+  if (this.isDying) {
+    this.dying -= 1
+    if (this.dying <= 0) {
+      this.isDead = true
+    }
+  } else {
+    this.life -= 1
+    if (this.life <= 0) {
+      this.kill()
+    }
   }
 }

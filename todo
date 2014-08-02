@@ -17,7 +17,7 @@ score object animation
 //shapes break down as death animation
 //hearts break down as death animation
 //drains glow/animate as collision animation (maybe spin once quickly?)
-game over animation, everything breaks down
+//game over animation, everything breaks down
 
 Also:
 particle effects...
