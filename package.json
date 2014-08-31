@@ -1,0 +1,23 @@
+{
+  "name": "blue-square",
+  "version": "0.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Zolmeister/blue-square.git"
+  },
+  "author": "Zolmeister",
+  "bugs": {
+    "url": "https://github.com/Zolmeister/blue-square/issues"
+  },
+  "homepage": "https://github.com/Zolmeister/blue-square",
+  "dependencies": {
+    "express": "4.8.7",
+    "fb-flo": "0.2.1"
+  }
+}
