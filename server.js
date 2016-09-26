@@ -9,6 +9,9 @@ app.get('/manifest.webapp', function(req, res) {
   res.sendfile(__dirname + '/manifest.webapp')
 })
 
+app.get('/ping', function (req, res) {
+  res.end('pong')
+})
 
 app.use(express['static'](__dirname + '/src'))
 
